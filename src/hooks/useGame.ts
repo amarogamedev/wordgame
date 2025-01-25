@@ -35,6 +35,8 @@ export const useGame = () => {
 
     function checkWord(newCells: Cell[]) {
         const currentWord = newCells.slice(-wordSize).map(cell => cell.character).join('');
+        const wordExists = true; //TODO implementar a verificação se a palavra existe
+
         const updatedCells = newCells.slice(-wordSize).map((cell, index) => {
             const correctPlace = cell.character === correctWord[index];
             const existsInTheWord = correctWord.includes(cell.character);
@@ -48,11 +50,11 @@ export const useGame = () => {
 
         setCells(prevCells => [
             ...prevCells.slice(0, -wordSize),
-            ...updatedCells
+            ...(wordExists ? updatedCells : [])
         ]);
 
         if(currentWord === correctWord) {
-            console.log('You won!'); //TODO melhorar isso
+            console.log('Venceu!'); //TODO melhorar isso
         }
     };
 
