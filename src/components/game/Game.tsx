@@ -1,14 +1,13 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { GameTable } from "./GameTable";
 import { useGame } from "../../hooks/useGame";
 
 export const Game = () => {
-    const { letters, resetLetters } = useGame();
+    const { cells, maxCells, wordSize } = useGame();
 
     return (
         <Box p={8} justifyItems={"center"}>
-            <GameTable letters={letters} />
-            <Button onClick={resetLetters} m={4}>Reset Letters</Button>
+            <GameTable cells={cells} maxCells={maxCells} wordSize={wordSize} />
         </Box>
     )
 }

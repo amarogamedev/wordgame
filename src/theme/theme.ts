@@ -6,9 +6,10 @@ const theme = extendTheme({
     body: "'Poppins', sans-serif",
   },
   colors: {
-    themeBackground: "#99b090",
-    themeLightGreen: "#eeffeb",
-    themeDarkGreen: "#485244"
+    themeBackground: "#262626",
+    themeGreen: "#8ed672",
+    themeDarkGrey: "#333333",
+    themeYellow: "#f5c269"
   },
   breakpoints: {
     base: "320px",

@@ -2,45 +2,68 @@ import { Grid, GridItem } from "@chakra-ui/react";
 import { Cell } from "../../interfaces/cell";
 
 interface GameTableProps {
-  letters: Cell[];
+    cells: Cell[];
+    maxCells: number;
+    wordSize: number;
 }
 
-export const GameTable: React.FC<GameTableProps> = ({ letters }) => {
-  const totalCells = 40;
-  const filledLetters = [...letters];
+export const GameTable: React.FC<GameTableProps> = ({ cells, maxCells, wordSize }) => {
+    const filledCells = [...cells];
 
-  while (filledLetters.length < totalCells) {
-    filledLetters.push({ character: null });
-  }
+    while (filledCells.length < maxCells) {
+        filledCells.push({ character: "" });
+    }
 
-  const limitedFilledLetters = filledLetters.slice(0, totalCells);
+    const limitedFilledCells = filledCells.slice(0, maxCells);
 
-  return (
-    <Grid
-      templateColumns="repeat(5, 1fr)"
-      gap={2}
-      width="100%"
-      maxWidth="600px"
-      margin="0 auto"
-    >
-      {limitedFilledLetters.map((letter, index) => (
-        <GridItem
-          key={index}
-          backgroundColor={letter.character == null ? "themeDarkGreen" : "themeLightGreen"}
-          color={"themeDarkGreen"}
-          fontSize={{ base: "12px", sm: "14px", md: "16px", lg: "18px", xl: "24px" }}
-          fontWeight={"black"}
-          width={{ base: "25px", sm: "30px", md: "40px", lg: "50px", xl: "80px" }}
-          height={{ base: "25px", sm: "30px", md: "40px", lg: "50px", xl: "80px" }}
-          aspectRatio={1}
-          borderRadius="md"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
+    const cellColor = (cell: Cell): string => {
+        if (cell.correctPlace) {
+            return "themeGreen";
+        } else if (cell.existsInTheWord) {
+            return "themeYellow";
+        } else if (cell.typing) {
+            return "white";
+        } else {
+            return "themeDarkGrey";
+        }
+    };
+
+    const textColor = (cell: Cell): string => {
+        if (cell.typing || cell.existsInTheWord) {
+            return "themeDarkGrey";
+        } else {
+            return "white";
+        }
+    };
+
+    return (
+        <Grid
+            templateColumns={"repeat(" + wordSize + ", 1fr)"}
+            gap={2}
+            width="100%"
+            maxWidth="600px"
+            margin="0 auto"
         >
-          {letter.character}
-        </GridItem>
-      ))}
-    </Grid>
-  );
+            {limitedFilledCells.map((cell, index) => (
+                <GridItem
+                    key={index}
+                    backgroundColor={cellColor(cell)}
+                    color={textColor(cell)}
+                    fontSize={{ base: "12px", sm: "14px", md: "16px", lg: "18px", xl: "24px" }}
+                    fontWeight={"black"}
+                    width={{ base: "25px", sm: "30px", md: "40px", lg: "50px", xl: "80px" }}
+                    height={{ base: "25px", sm: "30px", md: "40px", lg: "50px", xl: "80px" }}
+                    aspectRatio={1}
+                    borderRadius="md"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    borderColor={"themeDarkGrey"}
+                    borderWidth={1}
+                >
+                    {cell.character}
+                </GridItem>
+            ))}
+        </Grid>
+    );
 };
