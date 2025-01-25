@@ -2,7 +2,7 @@ import * as React from "react"
 import theme from "./theme/theme"
 import { ChakraProvider, Container } from "@chakra-ui/react"
 import { Title } from "./components/Title"
-import { Game } from "./components/Game"
+import { Game } from "./components/game/Game"
 
 export const App = () => (
   <ChakraProvider theme={theme}>
