@@ -1,10 +1,14 @@
 import * as React from "react"
-import {
-  ChakraProvider,
-  defaultSystem
-} from "@chakra-ui/react"
+import theme from "./theme/theme"
+import { ChakraProvider, Container } from "@chakra-ui/react"
+import { Title } from "./components/Title"
+import { Game } from "./components/Game"
+
 export const App = () => (
-  <ChakraProvider value={defaultSystem}>
-    <></>
+  <ChakraProvider theme={theme}>
+    <Container justifyItems={"center"} p={8}>
+      <Title />
+      <Game />
+    </Container>
   </ChakraProvider>
 )
