@@ -12,11 +12,11 @@ const theme = extendTheme({
     themeYellow: "#f5c269"
   },
   breakpoints: {
-    base: "320px",
-    sm: "600px",
-    md: "900px",
-    lg: "1280px",
-    xl: "1366px",
+    base: "640px",
+    sm: "960px",
+    md: "1280px",
+    lg: "1440px",
+    xl: "1920px",
   },
   styles: {
     global: {
