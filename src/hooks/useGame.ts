@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import { Cell } from "../interfaces/cell";
 import { useToast } from "@chakra-ui/react";
+import { useWords } from "./useWords";
 
 export const useGame = () => {
     const [cells, setCells] = useState<Cell[]>([]);
     const [gameEnded, setGameEnded] = useState(false);
-    const wordSize = 5;
-    const columns = 8;
-    const maxCells = wordSize * columns;
-    const correctWord = "REACT";
+    const { correctWord, wordSize, maxCells, wordIsValid } = useWords();
+    
     const toast = useToast();
 
     const addCell = (character: string) => {
@@ -34,7 +33,7 @@ export const useGame = () => {
 
     function checkWord(newCells: Cell[], lastChance: boolean) {
         const currentWord = newCells.slice(-wordSize).map(cell => cell.character).join('');
-        const wordExists = true; //TODO implementar a verificação se a palavra existe
+        const wordExists = wordIsValid(currentWord);
 
         const updatedCells = newCells.slice(-wordSize).map((cell, index) => {
             const correctPlace = cell.character === correctWord[index];
@@ -57,6 +56,9 @@ export const useGame = () => {
         }
         else if(lastChance) {
             lose();
+        }
+        else if(!wordExists) {
+            invalidWord();
         }
     };
 
@@ -88,13 +90,13 @@ export const useGame = () => {
         return () => {
             window.removeEventListener("keydown", handleKeydown);
         };
-    }, [gameEnded]);
+    }, []);
 
     function lose() {
         setGameEnded(true);
         toast({
-            title: "Você perdeu!",
-            description: "Suas tentativas acabaram :(",
+            title: "You lose!",
+            description: "You didn't find the word in time!",
             status: "error",
             duration: 3000,
             isClosable: true,
@@ -104,9 +106,19 @@ export const useGame = () => {
     function win() {
         setGameEnded(true);
         toast({
-            title: "Você venceu!",
-            description: "Parabéns, você acertou a palavra!",
+            title: "You win!",
+            description: "Congratulations! You found the word!",
             status: "success",
+            duration: 3000,
+            isClosable: true,
+        });
+    }
+
+    function invalidWord() {
+        toast({
+            title: "Invalid word!",
+            description: "This word does not exist in our dictionary",
+            status: "warning",
             duration: 3000,
             isClosable: true,
         });
