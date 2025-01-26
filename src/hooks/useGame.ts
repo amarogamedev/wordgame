@@ -54,11 +54,11 @@ export const useGame = () => {
         if(currentWord === correctWord) {
             win();
         }
-        else if(lastChance) {
-            lose();
-        }
         else if(!wordExists) {
             invalidWord();
+        }
+        else if(lastChance) {
+            lose();
         }
     };
 

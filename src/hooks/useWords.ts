@@ -1,5 +1,5 @@
 import { useToast } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import words from '../words.json';
 
 export const useWords = () => {
 
@@ -10,31 +10,11 @@ export const useWords = () => {
     const columns = 8;
     const maxCells = wordSize * columns;
 
-    const [words, setWords] = useState<string[]>([]);
-    const [correctWord, setCorrectWord] = useState<string>("");
+    const correctWord = words[Math.floor(Math.random() * words.length)];
 
     const wordIsValid = (word: string) => {
-        return words.includes(word.toLocaleLowerCase());
+        return words.includes(word);
     };
-
-    useEffect(() => {
-        const fetchWords = async () => {
-            try {
-                const response = await fetch("/words.json");
-                if (!response.ok) {
-                    errorLoadingWords("Error loading words");
-                }
-                const data = await response.json();
-                setWords(data);
-                const randomWord = data[Math.floor(Math.random() * data.length)];
-                setCorrectWord(randomWord);
-            } catch (error) {
-                errorLoadingWords(error);
-            }
-        };
-
-        fetchWords();
-    }, []);
 
     function errorLoadingWords(error: any) {
         toast({
