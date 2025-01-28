@@ -35,9 +35,27 @@ export const useGame = () => {
         const currentWord = newCells.slice(-wordSize).map(cell => cell.character).join('');
         const wordExists = wordIsValid(currentWord);
 
+        const letterCount: { [key: string]: number } = {};
+        const correctLetterCount: { [key: string]: number } = {};
+
+        //contamos quantas vezes cada letra aparece na palavra correta
+        for (const char of correctWord) {
+            correctLetterCount[char] = (correctLetterCount[char] || 0) + 1;
+        }
+
         const updatedCells = newCells.slice(-wordSize).map((cell, index) => {
+            let existsInTheWord = false;
+            if (correctWord.includes(cell.character)) {
+                //incrementamos a contagem de letras da palavra inputada
+                letterCount[cell.character] = (letterCount[cell.character] || 0) + 1;
+                
+                if (letterCount[cell.character] <= correctLetterCount[cell.character]) {
+                    existsInTheWord = true;
+                }
+            }
+
             const correctPlace = cell.character === correctWord[index];
-            const existsInTheWord = correctWord.includes(cell.character);
+
             return {
                 ...cell,
                 correctPlace,
