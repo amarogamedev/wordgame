@@ -114,7 +114,7 @@ export const useGame = () => {
         setGameEnded(true);
         toast({
             title: "You lose!",
-            description: "You didn't find the word in time!",
+            description: "The word was: " + correctWord,
             status: "error",
             duration: 3000,
             isClosable: true,
