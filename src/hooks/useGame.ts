@@ -6,7 +6,7 @@ import { useWords } from "./useWords";
 export const useGame = () => {
     const [cells, setCells] = useState<Cell[]>([]);
     const [gameEnded, setGameEnded] = useState(false);
-    const { correctWord, wordSize, maxCells, wordIsValid } = useWords();
+    const { correctWord, wordSize, maxCells, wordIsValid, pickAnotherWord } = useWords();
     
     const toast = useToast();
 
@@ -142,9 +142,16 @@ export const useGame = () => {
         });
     }
 
+    const resetGame = () => {
+        setCells([]);
+        setGameEnded(false);
+        pickAnotherWord();
+    };
+
     return {
         cells,
         maxCells,
-        wordSize
+        wordSize,
+        resetGame
     };
 };
