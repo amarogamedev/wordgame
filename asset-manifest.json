@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.js": "/amarogamedev/wordgame/static/js/main.69be3dfe.js",
+    "static/js/453.1e0d8d3f.chunk.js": "/amarogamedev/wordgame/static/js/453.1e0d8d3f.chunk.js",
+    "index.html": "/amarogamedev/wordgame/index.html",
+    "main.69be3dfe.js.map": "/amarogamedev/wordgame/static/js/main.69be3dfe.js.map",
+    "453.1e0d8d3f.chunk.js.map": "/amarogamedev/wordgame/static/js/453.1e0d8d3f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.69be3dfe.js"
+  ]
+}
