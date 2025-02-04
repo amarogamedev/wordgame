@@ -19,13 +19,14 @@ export const GameTable: React.FC<GameTableProps> = ({ cells, maxCells, wordSize 
     const cellColor = (cell: Cell): string => {
         if (cell.correctPlace) {
             return "themeGreen";
-        } else if (cell.existsInTheWord) {
-            return "themeYellow";
-        } else if (cell.typing) {
-            return "white";
-        } else {
-            return "themeDarkGrey";
         }
+        if (cell.existsInTheWord) {
+            return "themeYellow";
+        }
+        if (cell.typing) {
+            return "white";
+        }
+        return "themeDarkGrey";
     };
 
     const textColor = (cell: Cell): string => {

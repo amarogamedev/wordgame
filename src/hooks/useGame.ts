@@ -38,17 +38,22 @@ export const useGame = () => {
     function checkWord(newCells: Cell[], lastChance: boolean): void {
         const enteredWord = newCells.slice(-wordSize).map(cell => cell.character).join('');
         
+        if (!wordIsValid(enteredWord)) {
+            setCells(prevCells => [...prevCells.slice(0, -wordSize)]);
+            return invalidWord();
+        }
+        
         const correctLetterFrequency: Record<string, number> = {};
         for (const letter of correctWord) {
             correctLetterFrequency[letter] = (correctLetterFrequency[letter] || 0) + 1;
         }
-    
+        
         const matchedLetterCount: Record<string, number> = {};
         const updatedCells = newCells.slice(-wordSize).map((cell, index) => {
             const isCorrectPosition = cell.character === correctWord[index];
-    
+            
             matchedLetterCount[cell.character] = (matchedLetterCount[cell.character] || 0) + Number(isCorrectPosition);
-    
+            
             return {
                 ...cell,
                 correctPlace: isCorrectPosition,
@@ -56,7 +61,7 @@ export const useGame = () => {
                 typing: false
             };
         });
-    
+        
         updatedCells.forEach(cell => {
             const stillAvailable = (matchedLetterCount[cell.character] || 0) < correctLetterFrequency[cell.character];
             if (!cell.correctPlace && correctWord.includes(cell.character) && stillAvailable) {
@@ -66,9 +71,8 @@ export const useGame = () => {
         });
     
         setCells(prevCells => [...prevCells.slice(0, -wordSize), ...updatedCells]);
-    
+        
         if (enteredWord === correctWord) return win();
-        if (!wordIsValid(enteredWord)) return invalidWord();
         if (lastChance) return lose();
     }
 
@@ -113,7 +117,7 @@ export const useGame = () => {
         setGameEnded(true);
         toast({
             title: "You win!",
-            description: "Congratulations! You found the word!",
+            description: "Congratulations! You found the word! To play again simply refresh the page",
             status: "success",
             duration: 3000,
             isClosable: true,
