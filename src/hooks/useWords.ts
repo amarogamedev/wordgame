@@ -7,17 +7,15 @@ export const useWords = () => {
     const maxCells = wordSize * columns;
 
     //limitamos a 1000 palavras pois as mais "normais" aparecem mais acima
-    let correctWord = words[Math.floor(Math.random() * 1000)];
+    // let correctWord = words[Math.floor(Math.random() * 1000)];
+
+    const correctWord = "ENTER";
 
     const wordIsValid = (word: string) => {
         return words.includes(word);
     };
 
-    function pickAnotherWord () {
-        correctWord = words[Math.floor(Math.random() * 1000)];
-    }
-
     return {
-        correctWord, wordSize, maxCells, wordIsValid, pickAnotherWord
+        correctWord, wordSize, maxCells, wordIsValid
     };
 };

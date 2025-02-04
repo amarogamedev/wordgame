@@ -29,7 +29,7 @@ export const GameTable: React.FC<GameTableProps> = ({ cells, maxCells, wordSize 
     };
 
     const textColor = (cell: Cell): string => {
-        if (cell.typing || cell.existsInTheWord) {
+        if (cell.typing || cell.existsInTheWord || cell.correctPlace) {
             return "themeDarkGrey";
         } else {
             return "white";

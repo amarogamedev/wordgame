@@ -6,11 +6,15 @@ import { useWords } from "./useWords";
 export const useGame = () => {
     const [cells, setCells] = useState<Cell[]>([]);
     const [gameEnded, setGameEnded] = useState(false);
-    const { correctWord, wordSize, maxCells, wordIsValid, pickAnotherWord } = useWords();
+    const { correctWord, wordSize, maxCells, wordIsValid } = useWords();
     
     const toast = useToast();
 
     const addCell = (character: string) => {
+        if (gameEnded) {
+            return;
+        }
+
         setCells((prevCells) => {
             const newCells = [
                 ...prevCells,
@@ -31,54 +35,42 @@ export const useGame = () => {
         });
     };
 
-    function checkWord(newCells: Cell[], lastChance: boolean) {
-        const currentWord = newCells.slice(-wordSize).map(cell => cell.character).join('');
-        const wordExists = wordIsValid(currentWord);
-
-        const letterCount: { [key: string]: number } = {};
-        const correctLetterCount: { [key: string]: number } = {};
-
-        //contamos quantas vezes cada letra aparece na palavra correta
-        for (const char of correctWord) {
-            correctLetterCount[char] = (correctLetterCount[char] || 0) + 1;
+    function checkWord(newCells: Cell[], lastChance: boolean): void {
+        const enteredWord = newCells.slice(-wordSize).map(cell => cell.character).join('');
+        
+        const correctLetterFrequency: Record<string, number> = {};
+        for (const letter of correctWord) {
+            correctLetterFrequency[letter] = (correctLetterFrequency[letter] || 0) + 1;
         }
-
+    
+        const matchedLetterCount: Record<string, number> = {};
         const updatedCells = newCells.slice(-wordSize).map((cell, index) => {
-            let existsInTheWord = false;
-            if (correctWord.includes(cell.character)) {
-                //incrementamos a contagem de letras da palavra inputada
-                letterCount[cell.character] = (letterCount[cell.character] || 0) + 1;
-                
-                if (letterCount[cell.character] <= correctLetterCount[cell.character]) {
-                    existsInTheWord = true;
-                }
-            }
-
-            const correctPlace = cell.character === correctWord[index];
-
+            const isCorrectPosition = cell.character === correctWord[index];
+    
+            matchedLetterCount[cell.character] = (matchedLetterCount[cell.character] || 0) + Number(isCorrectPosition);
+    
             return {
                 ...cell,
-                correctPlace,
-                existsInTheWord,
+                correctPlace: isCorrectPosition,
+                existsInTheWord: isCorrectPosition,
                 typing: false
             };
         });
-
-        setCells(prevCells => [
-            ...prevCells.slice(0, -wordSize),
-            ...(wordExists ? updatedCells : [])
-        ]);
-
-        if(currentWord === correctWord) {
-            win();
-        }
-        else if(!wordExists) {
-            invalidWord();
-        }
-        else if(lastChance) {
-            lose();
-        }
-    };
+    
+        updatedCells.forEach(cell => {
+            const stillAvailable = (matchedLetterCount[cell.character] || 0) < correctLetterFrequency[cell.character];
+            if (!cell.correctPlace && correctWord.includes(cell.character) && stillAvailable) {
+                cell.existsInTheWord = true;
+                matchedLetterCount[cell.character] = (matchedLetterCount[cell.character] || 0) + 1;
+            }
+        });
+    
+        setCells(prevCells => [...prevCells.slice(0, -wordSize), ...updatedCells]);
+    
+        if (enteredWord === correctWord) return win();
+        if (!wordIsValid(enteredWord)) return invalidWord();
+        if (lastChance) return lose();
+    }
 
     const removeLastCharacter = () => {
         setCells((prevCells) => {
@@ -91,10 +83,6 @@ export const useGame = () => {
     };
 
     useEffect(() => {
-        if(gameEnded) {
-            return;
-        }
-
         const handleKeydown = (event: KeyboardEvent) => {
             if (/^[a-zA-Z]$/.test(event.key)) {
                 addCell(event.key.toLocaleUpperCase());
@@ -142,16 +130,9 @@ export const useGame = () => {
         });
     }
 
-    const resetGame = () => {
-        setCells([]);
-        setGameEnded(false);
-        pickAnotherWord();
-    };
-
     return {
         cells,
         maxCells,
-        wordSize,
-        resetGame
+        wordSize
     };
 };

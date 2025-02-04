@@ -23,7 +23,7 @@ export const ModalBemVindo = () => {
     }, [onOpen]);
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} size={"lg"}>
+        <Modal isOpen={isOpen} onClose={onClose} size={"lg"} isCentered>
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>Welcome to WordGame!</ModalHeader>
