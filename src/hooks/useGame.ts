@@ -10,6 +10,8 @@ export const useGame = () => {
     
     const toast = useToast();
 
+    const addCellSound = new Audio("/sounds/addCell.mp3");
+
     const addCell = (character: string) => {
         if (gameEnded) {
             return;
@@ -33,6 +35,8 @@ export const useGame = () => {
 
             return newCells;
         });
+
+        addCellSound.play();
     };
 
     function checkWord(newCells: Cell[], lastChance: boolean): void {
