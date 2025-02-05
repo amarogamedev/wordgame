@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/wordgame/static/js/main.5b6c8cc5.js",
+    "main.js": "/wordgame/static/js/main.b23bf7ae.js",
     "static/js/453.1e0d8d3f.chunk.js": "/wordgame/static/js/453.1e0d8d3f.chunk.js",
     "index.html": "/wordgame/index.html",
-    "main.5b6c8cc5.js.map": "/wordgame/static/js/main.5b6c8cc5.js.map",
+    "main.b23bf7ae.js.map": "/wordgame/static/js/main.b23bf7ae.js.map",
     "453.1e0d8d3f.chunk.js.map": "/wordgame/static/js/453.1e0d8d3f.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.5b6c8cc5.js"
+    "static/js/main.b23bf7ae.js"
   ]
 }
